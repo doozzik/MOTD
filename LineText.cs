@@ -19,10 +19,19 @@ namespace MOTD
         {
             configText = configText.Replace("%servername%", Steam.serverName);
             configText = configText.Replace("%playername%", player.CharacterName);
-            configText = configText.Replace("%adminsonline%", Admins());
             configText = configText.Replace("%online%", Steam.Players.Count().ToString() + "/" + Steam.MaxPlayers.ToString());
+            configText = configText.Replace("%adminsonline%", Admins());
+            configText = configText.Replace("%mode%", Steam.mode.ToString().ToLower());
+            configText = configText.Replace("%pvp/pve%", PvPorPvE());
+            configText = configText.Replace("%map%", Steam.map);
 
             _text = configText;
+        }
+
+        private string PvPorPvE()
+        {
+            if (Steam.isPvP) { return "PvP"; }
+            return "PvE";
         }
 
         private string Admins()
