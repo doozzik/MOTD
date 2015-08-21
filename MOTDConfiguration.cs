@@ -32,7 +32,6 @@ namespace MOTD
 
                 new Group("Admin", new List<Message>
                 {
-                    new Message("Current TPS: %tps%", "yellow"),
                     new Message("Players online: %online%", "yellow"),
                     new Message("Administrators online: %adminsonline%", "yellow"),
                 }),
