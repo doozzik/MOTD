@@ -74,13 +74,16 @@ namespace MOTD
             {
                 if (Configuration.Instance.ShowWarnings)
                 {
-                    Logger.LogWarning("[MOTD plugin] Cant find permission for player " + player.DisplayName + "Nothing will be shown to  him");
+                    Logger.LogWarning("[MOTD plugin] Cant find permission for player " + player.DisplayName + ". Nothing will be shown to  him");
                 }
                 return "none";
             }
 
-            Logger.LogWarning("[MOTD plugin] Player " + player.DisplayName + " has more than one permissions. Nothing will be shown to  him");
-            return "none";
+            if (Configuration.Instance.ShowWarnings)
+            {
+                Logger.LogWarning("[MOTD plugin] Player " + player.DisplayName + " has more than one permission. We will show messages only from latest group to him");
+            }
+            return permission;
         }
     }
 }
