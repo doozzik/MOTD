@@ -22,7 +22,7 @@ namespace MOTD
                     new Message("Enjoy and have fun!", "yellow"),
                 }),
 
-                new Group("Premium", new List<Message>
+                new Group("Vip", new List<Message>
                 {
                     new Message("Welcome back, %playername%", "yellow"),
                     new Message("There are %online% players online", "yellow"),
