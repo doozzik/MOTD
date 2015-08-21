@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MOTD")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Shows up to 4 colored messages in chat to connected players")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MOTD")]
