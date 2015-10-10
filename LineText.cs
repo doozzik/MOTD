@@ -16,27 +16,27 @@ namespace MOTD
          
         public LineText(string configText, UnturnedPlayer player)
         {
-            configText = configText.Replace("%servername%", Steam.serverName);
+            configText = configText.Replace("%servername%", Provider.serverName);
             configText = configText.Replace("%playername%", player.CharacterName);
-            configText = configText.Replace("%online%", Steam.Players.Count().ToString() + "/" + Steam.MaxPlayers.ToString());
+            configText = configText.Replace("%online%", Provider.Players.Count().ToString() + "/" + Provider.MaxPlayers.ToString());
             configText = configText.Replace("%adminsonline%", Admins());
-            configText = configText.Replace("%mode%", Steam.mode.ToString().ToLower());
+            configText = configText.Replace("%mode%", Provider.mode.ToString().ToLower());
             configText = configText.Replace("%pvp/pve%", PvPorPvE());
-            configText = configText.Replace("%map%", Steam.map);
+            configText = configText.Replace("%map%", Provider.map);
 
             _text = configText;
         }
 
         private string PvPorPvE()
         {
-            if (Steam.isPvP) { return "PvP"; }
+            if (Provider.PvP) { return "PvP"; }
             return "PvE";
         }
 
         private string Admins()
         {
             string str = "";
-            List<SteamPlayer> Players = Steam.Players;
+            List<SteamPlayer> Players = Provider.Players;
 
             foreach(SteamPlayer p in Players)
             {

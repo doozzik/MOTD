@@ -41,7 +41,7 @@ namespace MOTD
 
                             UnturnedChat.Say(player, text, color);
                         }
-                        catch(Exception e) // I am not pro in Exceptions, maybe this is not good a solution
+                        catch(Exception e) // I am not pro in Exceptions, maybe this is not good solution
                         {
                             Logger.LogError("[MOTD plugin] " + e.Message);
                         }
