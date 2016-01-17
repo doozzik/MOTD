@@ -12,20 +12,28 @@ namespace MOTD
     public class MOTD : RocketPlugin<MOTDConfiguration>
     {
         public static MOTD Instance;
-        
+        private Tps tpsMonitor;
+
         protected override void Load()
         {
             Instance = this;
+            tpsMonitor = new Tps();
+            CheckConfig();
 
             U.Events.OnPlayerConnected += ShowMessages;
         }
 
-        private void ShowMessages(UnturnedPlayer player) // dont understand, how i get UnturnedPlayer player
+        protected override void Unload()
+        {
+            U.Events.OnPlayerConnected -= ShowMessages;
+        }
+
+        private void ShowMessages(UnturnedPlayer player)
         {
             string permission = PlayerPermission(player);
             if (permission == "none") { return; }
 
-            foreach (Group g in Configuration.Instance.Gropus) // i dont know, how to do it easier (not to initialize every group)
+            foreach (Group g in Configuration.Instance.Groups)
             {
                 if (permission == "motd." + g.Name.ToLower())
                 {
@@ -33,7 +41,7 @@ namespace MOTD
                     {
                         try
                         {
-                            LineText lineText = new LineText(m.text, player);
+                            LineText lineText = new LineText(m.text, tpsMonitor, player);
                             string text = lineText.getText();
 
                             LineColor lineColor = new LineColor(m.color);
@@ -41,9 +49,10 @@ namespace MOTD
 
                             UnturnedChat.Say(player, text, color);
                         }
-                        catch(Exception e) // I am not pro in Exceptions, maybe this is not good solution
+                        catch(Exception e)
                         {
-                            Logger.LogError("[MOTD plugin] " + e.Message);
+                            Logger.LogError("[MOTD] Error: Cant show message to player " + player.DisplayName);
+                            Logger.LogError("[MOTD] Error: " + e.Message);
                         }
                     }
                     return;
@@ -54,9 +63,9 @@ namespace MOTD
         private string PlayerPermission(UnturnedPlayer player)
         {
             int amount = 0;
-            string permission = "invalid";
+            string permission = "none";
 
-            foreach(Group g in Configuration.Instance.Gropus)
+            foreach(Group g in Configuration.Instance.Groups)
             {
                 if (player.HasPermission("motd." + g.Name.ToLower()))
                 {
@@ -74,16 +83,47 @@ namespace MOTD
             {
                 if (Configuration.Instance.ShowWarnings)
                 {
-                    Logger.LogWarning("[MOTD plugin] Cant find permission for player " + player.DisplayName + ". Nothing will be shown to  him");
+                    Logger.LogWarning("[MOTD] Warning: Cant find permission for player " + player.DisplayName);
+                    Logger.LogWarning("[MOTD] Warning: Nothing will be shown to  him.");
                 }
                 return "none";
             }
 
             if (Configuration.Instance.ShowWarnings)
             {
-                Logger.LogWarning("[MOTD plugin] Player " + player.DisplayName + " has more than one permission. We will show messages only from latest group to him");
+                Logger.LogWarning("[MOTD] Warning: Player " + player.DisplayName + " has more than one permission.");
+                Logger.LogWarning("[MOTD] Warning: We will show messages only from latest group (in MOTD config) to him.");
             }
+
             return permission;
+        }
+
+        private void CheckConfig()
+        {
+            if (Configuration.Instance.Groups.Count == 0)
+            {
+                Logger.LogError(@"[MOTD] Error: You have 0 groups in MOTD.configuration.xml.");
+                Logger.LogError(@"[MOTD] Error: If you just updated the plugin, you must replace all words ""Gropus"" with ""Groups"" in your MOTD.configuration.xml");
+            }
+
+            foreach (Group g in Configuration.Instance.Groups)
+            {
+                if (Configuration.Instance.ShowWarnings)
+                {
+
+                    if (g.Messages.Count == 0)
+                    {
+                        Logger.LogWarning("[MOTD] Warning: You have 0 messages for group " + g.Name);
+                        Logger.LogWarning("[MOTD] Warning: Nothing will be shown to players from that group");
+                    }
+
+                    if (g.Messages.Count > 4)
+                    {
+                        Logger.LogWarning("[MOTD] Warning: You have more than 4 messages for group " + g.Name);
+                        Logger.LogWarning("[MOTD] Warning: We will display only latest 4 messages to players");
+                    }
+                }
+            }
         }
     }
 }

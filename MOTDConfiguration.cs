@@ -7,13 +7,13 @@ namespace MOTD
     {
         public bool ShowWarnings;
 
-        public List<Group> Gropus;
+        public List<Group> Groups;
 
         public void LoadDefaults()
         {
             ShowWarnings = true;
 
-            Gropus = new List<Group>
+            Groups = new List<Group>
             {
                 new Group("Default", new List<Message>
                 {
@@ -33,7 +33,9 @@ namespace MOTD
                 new Group("Admin", new List<Message>
                 {
                     new Message("Players online: %online%", "yellow"),
-                    new Message("Administrators online: %adminsonline%", "yellow"),
+                    new Message("Admins online: %adminsonline%", "yellow"),
+                    new Message("Server uptime: %uptime%", "yellow"),
+                    new Message("TPS from last 1m, 5m, 15m: %tps%", "yellow"),
                 }),
             };
         }
