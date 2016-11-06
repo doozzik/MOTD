@@ -19,7 +19,7 @@ namespace MOTD
         {
             configText = configText.Replace("%servername%", Provider.serverName);
             configText = configText.Replace("%playername%", player.CharacterName);
-            configText = configText.Replace("%online%", Provider.Players.Count().ToString() + "/" + Provider.MaxPlayers.ToString());
+            configText = configText.Replace("%online%", Provider.clients.Count().ToString() + "/" + Provider.maxPlayers.ToString());
             configText = configText.Replace("%adminsonline%", Admins());
             configText = configText.Replace("%mode%", Provider.mode.ToString().ToLower());
             configText = configText.Replace("%pvp/pve%", PvPorPvE());
@@ -32,18 +32,18 @@ namespace MOTD
 
         private string PvPorPvE()
         {
-            if (Provider.PvP) { return "PvP"; }
+            if (Provider.isPvP) { return "PvP"; }
             return "PvE";
         }
 
         private string Admins()
         {
             string str = "";
-            List<SteamPlayer> Players = Provider.Players;
+            List<SteamPlayer> Players = Provider.clients;
 
             foreach(SteamPlayer p in Players)
             {
-                if (p.IsAdmin)
+                if (p.isAdmin)
                 {
                     if (str != "") { str += ", "; }
                     str += p.player.name;

@@ -1,10 +1,9 @@
 ﻿using Rocket.Core.Plugins;
+using Rocket.Core.Logging;
 using Rocket.Unturned;
 using Rocket.Unturned.Player;
 using Rocket.Unturned.Chat;
-using UnityEngine;
 using Rocket.API;
-using Rocket.Core.Logging;
 using System;
 
 namespace MOTD
@@ -45,7 +44,7 @@ namespace MOTD
                             string text = lineText.getText();
 
                             LineColor lineColor = new LineColor(m.color);
-                            Color color = new Color(lineColor.get('r'), lineColor.get('g'), lineColor.get('b'));
+                            UnityEngine.Color color = new UnityEngine.Color(lineColor.get('r'), lineColor.get('g'), lineColor.get('b'));
 
                             UnturnedChat.Say(player, text, color);
                         }
@@ -73,37 +72,22 @@ namespace MOTD
                     permission = "motd." + g.Name.ToLower();
                 }
             }
-            
-            if (amount == 1)
-            {
-                return permission;
-            }
 
             if (amount == 0)
             {
-                if (Configuration.Instance.ShowWarnings)
-                {
-                    Logger.LogWarning("[MOTD] Warning: Cant find permission for player " + player.DisplayName);
-                    Logger.LogWarning("[MOTD] Warning: Nothing will be shown to  him.");
-                }
                 return "none";
             }
-
-            if (Configuration.Instance.ShowWarnings)
+            else
             {
-                Logger.LogWarning("[MOTD] Warning: Player " + player.DisplayName + " has more than one permission.");
-                Logger.LogWarning("[MOTD] Warning: We will show messages only from latest group (in MOTD config) to him.");
+                return permission;
             }
-
-            return permission;
         }
 
         private void CheckConfig()
         {
             if (Configuration.Instance.Groups.Count == 0)
             {
-                Logger.LogError(@"[MOTD] Error: You have 0 groups in MOTD.configuration.xml.");
-                Logger.LogError(@"[MOTD] Error: If you just updated the plugin, you must replace all words ""Gropus"" with ""Groups"" in your MOTD.configuration.xml");
+                Logger.LogError(@"[MOTD] Error: You have 0 groups in MOTD.configuration.xml");
             }
 
             foreach (Group g in Configuration.Instance.Groups)
