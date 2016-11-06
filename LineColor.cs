@@ -272,10 +272,9 @@ namespace MOTD
 
         private bool ConvertStringToByte(string str)
         {
-            byte byteVal = 0;
             try
             {
-                byteVal = Convert.ToByte(str);
+                byte byteVal = Convert.ToByte(str);
             }
             catch
             {
