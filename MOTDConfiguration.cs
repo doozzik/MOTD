@@ -11,7 +11,7 @@ namespace MOTD
 
         public void LoadDefaults()
         {
-            ServerOpened = "09-11-2016";
+            ServerOpened = "12-31-2016";
 
             Groups = new List<Group>
             {
