@@ -28,9 +28,6 @@ namespace MOTD
             configText = Regex.Replace(configText, "%map%", Provider.map, RegexOptions.IgnoreCase);
             configText = Regex.Replace(configText, "%uptime%", UpTime(), RegexOptions.IgnoreCase);
             configText = Regex.Replace(configText, "%tps%", TPS(tpsMonitor), RegexOptions.IgnoreCase);
-            configText = Regex.Replace(configText, "%currenttime%", DateTime.Now.ToString("h:mm:ss tt"), RegexOptions.IgnoreCase);
-            configText = Regex.Replace(configText, "%currentdate%", DateTime.Now.ToString("M/d/yyyy"), RegexOptions.IgnoreCase);
-            configText = Regex.Replace(configText, "%servertime%", Provider.time.ToString(), RegexOptions.IgnoreCase);
             configText = Regex.Replace(configText, "%serverdays%", ServerDays(date), RegexOptions.IgnoreCase);
 
             text = configText;
