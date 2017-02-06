@@ -12,6 +12,7 @@ namespace MOTD
             _g = (1f / 255f) * g;
             _b = (1f / 255f) * b;
         }
+
         public float get(char channel)
         {
             switch (channel)
@@ -88,6 +89,7 @@ namespace MOTD
             if (stringColor == "purple") { set(128, 0, 128); }
 
         }
+
         private void ConvertHex(string hexColor)
         {
             hexColor = hexColor.Remove(0, 1); // remove '#' on first position
@@ -108,6 +110,7 @@ namespace MOTD
 
             set(r, g, b);
         }
+
         private void ConvertRGB(string rgbColor)
         {
             int commaPos1 = 0;
@@ -148,6 +151,7 @@ namespace MOTD
 
             return true;
         }
+
         private bool ColorIsInHex(string color)
         {
             if (color[0] == '#')
@@ -179,6 +183,7 @@ namespace MOTD
 
             return true; // if everything ok
         }
+
         private bool ColorIsInRGB(string color)
         {
             if (color.Length < 5 || color.Length > 11) // min "0,0,0" max "255,255,255"
@@ -246,6 +251,7 @@ namespace MOTD
 
             return false;
         }
+
         private bool StringConsistOnlyOfThisArray(string str, char[] charArray)
         {
             int temp = 0;

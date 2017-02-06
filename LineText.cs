@@ -1,7 +1,9 @@
 ﻿using Rocket.Unturned.Player;
 using SDG.Unturned;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace MOTD
@@ -15,19 +17,31 @@ namespace MOTD
             return text;
         }
 
-        public LineText(string configText, Tps tpsMonitor, UnturnedPlayer player)
+        public LineText(string configText, Tps tpsMonitor, UnturnedPlayer player, string date)
         {
-            configText = configText.Replace("%servername%", Provider.serverName);
-            configText = configText.Replace("%playername%", player.CharacterName);
-            configText = configText.Replace("%online%", Provider.clients.Count().ToString() + "/" + Provider.maxPlayers.ToString());
-            configText = configText.Replace("%adminsonline%", Admins());
-            configText = configText.Replace("%mode%", Provider.mode.ToString().ToLower());
-            configText = configText.Replace("%pvp/pve%", PvPorPvE());
-            configText = configText.Replace("%map%", Provider.map);
-            configText = configText.Replace("%uptime%", UpTime());
-            configText = configText.Replace("%tps%", TPS(tpsMonitor));
+            configText = Regex.Replace(configText, "%servername%", Provider.serverName, RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%playername%", player.CharacterName, RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%online%", Provider.clients.Count() + "/" + Provider.maxPlayers, RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%adminsonline%", Admins(), RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%mode%", Provider.mode.ToString(), RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%pvp/pve%", PvPorPvE(), RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%map%", Provider.map, RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%uptime%", UpTime(), RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%tps%", TPS(tpsMonitor), RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%currenttime%", DateTime.Now.ToString("h:mm:ss tt"), RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%currentdate%", DateTime.Now.ToString("M/d/yyyy"), RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%servertime%", Provider.time.ToString(), RegexOptions.IgnoreCase);
+            configText = Regex.Replace(configText, "%serverdays%", ServerDays(date), RegexOptions.IgnoreCase);
 
             text = configText;
+        }
+        
+        private string ServerDays(string dateStart)
+        {
+            DateTime time = Convert.ToDateTime(dateStart);
+            TimeSpan result = DateTime.Now.Subtract(time);
+
+            return result.Days.ToString();
         }
 
         private string PvPorPvE()
